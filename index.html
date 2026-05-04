@@ -180,42 +180,6 @@ body{display:flex;flex-direction:column;}
 .status-done{background:rgba(96,165,250,.2);color:#60a5fa;border:1px solid #60a5fa55;}
 .add-card{background:var(--bg2);border:2px dashed var(--border);border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;cursor:default;min-height:220px;color:var(--muted);font-size:13px;}
 .add-card:hover{border-color:#4b5563;color:var(--text);}
-/* ── APEC TAB ── */
-.apec-header{margin-bottom:18px;}
-.apec-header h2{font-size:16px;font-weight:800;background:linear-gradient(135deg,#f59e0b,#22c55e,#60a5fa);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px;}
-.apec-header p{font-size:11px;color:var(--muted);line-height:1.6;}
-.apec-legend{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:16px;padding:8px 12px;background:var(--bg2);border-radius:8px;border:1px solid var(--border);}
-.apec-legend-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
-.apec-ch{background:var(--bg2);border:1px solid var(--border);border-radius:12px;margin-bottom:10px;overflow:hidden;transition:box-shadow .15s;}
-.apec-ch:hover{box-shadow:0 2px 12px rgba(0,0,0,.3);}
-.apec-ch-head{display:flex;align-items:center;gap:10px;padding:10px 14px;cursor:pointer;user-select:none;}
-.apec-ch-head:hover{background:var(--bg3);}
-.apec-ch-num{font-size:17px;font-weight:800;color:var(--muted);min-width:28px;}
-.apec-ch-title{font-size:13px;font-weight:600;flex:1;color:var(--text);}
-.apec-ch-part{font-size:10px;color:var(--muted);}
-.apec-tags-preview{display:flex;flex-wrap:wrap;gap:4px;margin-right:8px;}
-.apec-empty-label{font-size:11px;color:var(--muted);font-style:italic;padding:2px 6px;}
-.apec-ch-body{display:none;padding:12px 14px 14px 52px;border-top:1px solid var(--border);}
-.apec-ch-body.open{display:block;}
-.apec-section{margin-bottom:12px;}
-.apec-section-label{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;color:var(--muted);}
-.apec-tags{display:flex;flex-wrap:wrap;gap:6px;}
-.apec-tag{display:flex;align-items:center;gap:4px;font-size:12px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid;cursor:default;transition:filter .1s;}
-.apec-tag:hover{filter:brightness(1.2);}
-.apec-tag.present{opacity:1;}
-.apec-tag.absent{opacity:.22;filter:grayscale(.8);}
-.apec-tag-icon{font-size:13px;}
-.apec-tag-name{font-size:11px;}
-.apec-detail{font-size:11px;color:var(--muted);line-height:1.7;margin-top:8px;padding:8px 10px;background:var(--bg3);border-radius:7px;border-left:2px solid var(--border);}
-.apec-detail b{color:var(--text);}
-.apec-coverage{display:flex;align-items:center;gap:8px;}
-.apec-cov-bar{flex:1;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
-.apec-cov-fill{height:100%;border-radius:2px;background:linear-gradient(90deg,#22c55e,#60a5fa);}
-.apec-cov-pct{font-size:10px;color:var(--muted);min-width:32px;text-align:right;}
-.apec-stats-row{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
-.apec-stat-card{background:var(--bg2);border:1px solid var(--border);border-radius:10px;padding:10px 14px;flex:1;min-width:100px;}
-.apec-stat-card .n{font-size:22px;font-weight:800;}
-.apec-stat-card .l{font-size:10px;color:var(--muted);margin-top:2px;}
 </style>
 </head>
 <body>
@@ -249,7 +213,6 @@ body{display:flex;flex-direction:column;}
   <div class="tab" onclick="switchTab('remind')">🔔 提醒导航</div>
   <div class="tab" onclick="switchTab('enc')">📚 理论百科</div>
   <div class="tab" onclick="switchTab('progress')">📋 写作进度</div>
-  <div class="tab" onclick="switchTab('apec')">🌏 APEC要素</div>
 </div>
 
 <div class="legend">
@@ -280,11 +243,6 @@ body{display:flex;flex-direction:column;}
 
 <div class="page" id="page-progress" style="flex-direction:column;overflow-y:auto;padding:20px">
   <div id="progress-content"></div>
-</div>
-
-<!-- ═══ APEC 要素视图 ═══ -->
-<div class="page" id="page-apec" style="flex-direction:column;overflow-y:auto;padding:16px 20px;">
-  <div id="apec-content"></div>
 </div>
 
 </div><!-- /main-ui -->
@@ -593,13 +551,12 @@ function buildProgress(){
 
 function switchTab(t){
   document.querySelectorAll('.tab').forEach((el,i)=>{
-    el.classList.toggle('active', ['matrix','remind','enc','progress','apec'][i]===t);
+    el.classList.toggle('active', ['matrix','remind','enc','progress'][i]===t);
   });
   document.querySelectorAll('.page').forEach((el)=>{
     el.classList.toggle('active', el.id==='page-'+t);
   });
   if(t==='progress') buildProgress();
-  if(t==='apec') buildApec();
 }
 
 // ── Effective status ─────────────────────────────────
@@ -883,296 +840,6 @@ function showEnc(tid){
     ${t.citation?`<div class="enc-section"><h3>APA引用</h3><div class="enc-cite">${t.citation}</div></div>`:''}
     ${links?`<div class="enc-section"><h3>文献搜索</h3><div class="enc-links">${links}</div></div>`:''}
   `;
-}
-
-// ══════════════════════════════════════════════════════
-// APEC 要素视图
-// ══════════════════════════════════════════════════════
-const APEC_ELEMENTS = [
-  // 每个要素：{id, icon, name, color, borderColor, keywords[], detail}
-  // 只保留正面/中性要素，排除贸易战、制裁等敏感内容
-  {
-    id:'apec2026', icon:'🏆', name:'2026深圳APEC',
-    color:'rgba(251,191,36,.18)', borderColor:'rgba(251,191,36,.6)',
-    textColor:'#fbbf24',
-    // 章节内容关键词检测（每章文本里找到>=1即视为覆盖）
-    keywords:['APEC','亚太经合','2026','鲲鹏','深圳峰会','办会','营城','兴业','惠民'],
-    detail:'2026年11月深圳举办APEC领导人非正式会议，主题：建设亚太共同体，促进共同繁荣。三大优先领域：开放、创新、合作。'
-  },
-  {
-    id:'apec_mech', icon:'🌐', name:'APEC机制',
-    color:'rgba(96,165,250,.18)', borderColor:'rgba(96,165,250,.5)',
-    textColor:'#60a5fa',
-    keywords:['APEC','亚太经合','茂物','布特拉加亚','协商一致','非约束性','高官会','部长级'],
-    detail:'APEC成立于1989年，21个成员经济体，以自愿、非约束性承诺为核心。2040布特拉加亚愿景：开放、活力、强韧、和平。'
-  },
-  {
-    id:'connectivity', icon:'🔗', name:'互联互通',
-    color:'rgba(167,139,250,.18)', borderColor:'rgba(167,139,250,.5)',
-    textColor:'#a78bfa',
-    keywords:['互联互通','连通','口岸','通道','硬件互联','制度互联','人文交流','基础设施'],
-    detail:'2014年北京APEC通过互联互通蓝图三大支柱：硬件互联互通、制度互联互通、人文交流互联互通。'
-  },
-  {
-    id:'trade_open', icon:'💹', name:'贸易开放',
-    color:'rgba(34,197,94,.18)', borderColor:'rgba(34,197,94,.5)',
-    textColor:'#22c55e',
-    keywords:['FTAAP','亚太自贸区','贸易自由化','投资便利化','WTO','多边贸易','跨境贸易','自由贸易'],
-    detail:'FTAAP（亚太自由贸易区）是APEC长期目标，中国立场：持续推动、循序渐进、积累条件。支持以WTO为核心的多边贸易体制。'
-  },
-  {
-    id:'digital_ai', icon:'🤖', name:'数字/AI',
-    color:'rgba(99,102,241,.18)', borderColor:'rgba(99,102,241,.5)',
-    textColor:'#818cf8',
-    keywords:['数字经济','数字化','人工智能','AI','算力','数据要素','智能','数字中国','智慧'],
-    detail:'2026年APEC优先议题之一。中国立场：激活数据要素作用，推进数据安全有序流动；AI须有益、安全、公平、向善；数字化、智能化、绿色化三转型。'
-  },
-  {
-    id:'green', icon:'🌿', name:'绿色低碳',
-    color:'rgba(20,184,166,.18)', borderColor:'rgba(20,184,166,.5)',
-    textColor:'#2dd4bf',
-    keywords:['绿色','低碳','碳','新能源','可持续','ESG','储能','虚拟电厂','清洁','生态','亚太可持续'],
-    detail:'2025年庆州宣言绿色低碳方向：打造亚太可持续发展新范式。深圳样本：公共交通电动化、储能、虚拟电厂、数字能源、国际红树林中心。'
-  },
-  {
-    id:'ocean', icon:'🌊', name:'海洋经济',
-    color:'rgba(14,165,233,.18)', borderColor:'rgba(14,165,233,.5)',
-    textColor:'#0ea5e9',
-    keywords:['海洋','蓝色经济','滨海','APEC蓝色','海洋电子信息','海洋装备','海洋生物','红树林','盐田港'],
-    detail:'APEC蓝色经济倡议涵盖海洋产业和生态保护。深圳三条主线：海洋电子信息、海洋高端装备、海洋生物医药。国际红树林中心落户深圳。'
-  },
-  {
-    id:'lowalt', icon:'🚁', name:'低空经济',
-    color:'rgba(251,146,60,.18)', borderColor:'rgba(251,146,60,.5)',
-    textColor:'#fb923c',
-    keywords:['低空经济','无人机','飞行','通航','低空','空域','起降点','eVTOL'],
-    detail:'深圳2024年率先立法（低空经济条例2024年2月施行），整机、零部件、场景、空域、起降点五大产业要素，是2026年APEC展示深圳创新的亮点领域。'
-  },
-  {
-    id:'city_gov', icon:'🏙️', name:'城市治理/营城',
-    color:'rgba(148,163,184,.18)', borderColor:'rgba(148,163,184,.5)',
-    textColor:'#94a3b8',
-    keywords:['城市治理','营城','市容','治理','政府效能','深圳湾口岸','四语','专用通道','高标准'],
-    detail:'2026年深圳政府工作报告：一体推进办会、营城、兴业、惠民。APEC成为城市治理提质契机：深圳湾口岸四语标识、专用通道，城市管理向"管理更细、体验更好"升级。'
-  },
-  {
-    id:'people', icon:'👥', name:'民生/惠民',
-    color:'rgba(244,114,182,.18)', borderColor:'rgba(244,114,182,.5)',
-    textColor:'#f472b6',
-    keywords:['民生','惠民','居民','市民','生活','服务','便民','便捷支付','多语种','志愿','来深飞'],
-    detail:'APEC筹备服务转化为全社会公共产品：来深飞国际中转品牌、外卡支付全覆盖、福田七语志愿手环、外籍便携指南，民生服务提标。'
-  },
-  {
-    id:'inclusive', icon:'🤝', name:'包容发展',
-    color:'rgba(251,113,133,.18)', borderColor:'rgba(251,113,133,.5)',
-    textColor:'#fb7185',
-    keywords:['包容','银发经济','养老','人口结构','中小企业','粮食安全','能源转型','卫生健康','人力资源'],
-    detail:'2025年庆州宣言特别提及人口结构变化。包容发展对象：中小企业、人力资源、粮食安全、能源转型、卫生健康、银发经济。'
-  },
-  {
-    id:'innov', icon:'🔬', name:'科技创新',
-    color:'rgba(52,211,153,.18)', borderColor:'rgba(52,211,153,.5)',
-    textColor:'#34d399',
-    keywords:['创新','科技','科创','研发','实验室','20+8','未来产业','新质生产力','合成生物','空天'],
-    detail:'2026年APEC三大优先领域含"创新"。深圳20+8产业：20个战略性新兴产业+8大未来产业（合成生物、细胞与基因、空天技术）。'
-  },
-  {
-    id:'qianhai', icon:'🏛️', name:'前海/自贸开放',
-    color:'rgba(234,179,8,.18)', borderColor:'rgba(234,179,8,.5)',
-    textColor:'#eab308',
-    keywords:['前海','自贸','河套','制度创新','开放枢纽','e站通','港澳专业','跨境'],
-    detail:'前海：深港合作平台和高水平开放门户。河套：一区两园，科研转化规则开放。前海e站通：企业出海综合服务入口。2026年初26类港澳专业人士便利执业。'
-  },
-  {
-    id:'gba', icon:'🌉', name:'深港/大湾区',
-    color:'rgba(6,182,212,.18)', borderColor:'rgba(6,182,212,.5)',
-    textColor:'#06b6d4',
-    keywords:['深港','香港','大湾区','湾区','协奏','双城','河套','前海深港','粤港澳'],
-    detail:'深圳在大湾区的角色：核心引擎之一，国际科技创新中心重要支点。深港协同：前海合作区、河套深港科技创新合作区。'
-  },
-];
-
-// 逐章检测APEC要素覆盖情况（基于chapter tex文本缓存）
-// 由于是前端静态页面，使用预计算的章节→要素映射
-const APEC_CHAPTER_MAP = {
-  // 格式: chNum: [已覆盖要素id列表]
-  // 基于对各章.tex文件的关键词分析得出
-  1:  ['apec2026','connectivity','digital_ai','green','lowalt','qianhai','gba','innov','city_gov','people','inclusive'],
-  2:  ['connectivity','green','ocean','gba','innov','city_gov','people','inclusive'],
-  3:  ['connectivity','digital_ai','green','qianhai','innov','city_gov','people'],
-  4:  ['trade_open','connectivity','digital_ai','green','gba','people'],
-  5:  ['trade_open','digital_ai','green','qianhai','gba','innov','people'],
-  6:  ['trade_open','connectivity','green','ocean','qianhai','gba','innov','people'],
-  7:  ['connectivity','digital_ai','lowalt','qianhai','innov'],
-  8:  ['qianhai','gba','innov','people','inclusive'],
-  9:  ['digital_ai','green','lowalt','qianhai','gba','innov'],
-  10: ['digital_ai','qianhai','city_gov','people','inclusive'],
-  11: ['digital_ai','qianhai','innov','people','inclusive'],
-  12: ['trade_open','connectivity','digital_ai','qianhai','gba','city_gov','people','inclusive'],
-  13: ['trade_open','digital_ai','green','lowalt','innov','city_gov','people','inclusive'],
-  14: ['digital_ai','green','lowalt','qianhai','innov','city_gov','people','inclusive'],
-  15: ['trade_open','digital_ai','green','ocean','qianhai','gba','innov','people','inclusive'],
-  16: ['digital_ai','people','inclusive'],
-  17: ['innov','people','inclusive'],
-  18: ['green','innov','city_gov','people','inclusive'],
-  19: ['trade_open','connectivity','digital_ai','qianhai','gba','innov','people'],
-  20: ['connectivity','qianhai','gba','innov','people'],
-  21: ['apec2026','apec_mech','trade_open','connectivity','digital_ai','qianhai','gba','innov','city_gov'],
-};
-
-// 章节APEC主题要点（写进书里后才显示的提示语）
-const APEC_CH_NOTES = {
-  1: 'APEC背景下，特区制度的开放定力为深圳持续创新奠定制度基础，是中国第三次主办APEC的历史积累。',
-  2: '山城关系折射城市生态文明：与2026年APEC绿色低碳、可持续发展议题高度契合。',
-  3: '深圳"秒批"营商环境是APEC贸易投资便利化、数字政务的典型样本。',
-  4: '盐田港是APEC互联互通的实体节点，全球价值链的深圳锚点。',
-  5: '前海金融开放是APEC贸易投资自由化在深圳的制度实践。',
-  6: '蓝色经济呼应APEC蓝色经济倡议，深圳海洋产业三条主线是典型案例。',
-  7: '鹏城实验室代表深圳在APEC"开放、创新、合作"框架下的科创贡献。',
-  8: '产学研协同是APEC人力资源与创新合作议题的深圳诠释。',
-  9: '低空经济、合成生物等未来产业是深圳APEC创新展示的核心名片。',
-  10: '城中村更新是APEC包容发展、民生惠民议题的深圳城市实验。',
-  11: '安居宜居是APEC包容发展落到城市治理层面的民生底线。',
-  12: '智慧城市交通是APEC数字化、互联互通硬件支柱的城市级示范。',
-  13: '数据要素市场是APEC数字经济治理规则的深圳探索前沿。',
-  14: '华为大疆比亚迪代表深圳企业在APEC创新合作网络中的旗舰地位。',
-  15: '多中心网络城市格局是APEC开放、互联互通在深圳空间维度的体现。',
-  16: '四代打工人的包容叙事，是APEC"人文交流互联互通"与包容发展的人本注脚。',
-  17: '多元文化与创意阶层是APEC人文交流议题在深圳的社会基础。',
-  18: '人民城市理念是APEC惠民导向与"办会兴城"逻辑的深度诠释。',
-  19: '口岸与边境贸易是APEC互联互通、贸易便利化在深圳的地理节点。',
-  20: '深港河套是APEC框架下跨境科创合作制度实验的标志性案例。',
-  21: '大湾区枢纽地位是深圳在APEC亚太共同体愿景中的区域使命所在。',
-};
-
-const APEC_PARTS = {
-  '山篇·制度脊梁':{color:'#a78bfa', chs:[1,2,3]},
-  '海篇·流动共生':{color:'#0ea5e9', chs:[4,5,6]},
-  '天篇·科创未来':{color:'#22c55e', chs:[7,8,9]},
-  '陆篇·城市人本':{color:'#f59e0b', chs:[10,11,12]},
-  '共篇·生态创新':{color:'#34d399', chs:[13,14,15]},
-  '人篇·鹏程之城':{color:'#fb7185', chs:[16,17,18]},
-  '湾篇·涛声合鸣':{color:'#60a5fa', chs:[19,20,21]},
-};
-
-const APEC_CH_TITLES = {
-  1:'山为脊梁：特区制度的定力', 2:'梧桐之高：山与城的隐喻',
-  3:'政府高效：治理的深圳逻辑', 4:'海为血脉：盐田港与世界连通',
-  5:'资本之潮：前海、深交所与金融深圳', 6:'蓝色动能：海洋与滨海经济',
-  7:'天为气场：鹏城实验室与科创高地', 8:'科教星座：学府与科研的协同网络',
-  9:'飞行与想象：未来产业的深圳图谱', 10:'陆为土壤：城中村与城市更新',
-  11:'城市空间的承载力：安居与宜居', 12:'数字网络：交通、治理与智慧城市',
-  13:'产业共生：数据要素与制度协同', 14:'科创转化：从实验室到市场的深圳机制',
-  15:'先行示范：深圳进化模式的内在逻辑', 16:'四代打工人：劳动者如何构建深圳',
-  17:'人的文化：多元共融与创造力', 18:'人民城市：深圳样本的深度诠释',
-  19:'湾的起点：从口岸到世界', 20:'双城故事：深港的协奏曲',
-  21:'湾区成盘：深圳的棋局落子',
-};
-
-let apecBuilt = false;
-function buildApec(){
-  if(apecBuilt) return;
-  apecBuilt = true;
-
-  // 统计
-  let totalCoverage = 0, totalPossible = 0;
-  let chWithAny = 0;
-  for(let ch=1; ch<=21; ch++){
-    const present = APEC_CHAPTER_MAP[ch]||[];
-    if(present.length>0) chWithAny++;
-    totalCoverage += present.length;
-    totalPossible += APEC_ELEMENTS.length;
-  }
-  const covPct = Math.round(totalCoverage/totalPossible*100);
-
-  // 找出最多覆盖要素的章
-  let topCh = 1, topCount = 0;
-  for(let ch=1; ch<=21; ch++){
-    const n = (APEC_CHAPTER_MAP[ch]||[]).length;
-    if(n > topCount){ topCount=n; topCh=ch; }
-  }
-
-  let html = `
-  <div class="apec-header">
-    <h2>🌏 各章 APEC 要素覆盖地图</h2>
-    <p>绿色亮起 = 该章已涵盖此要素 · 灰色暗显 = 尚未写入，可作为写作参考<br>
-    数据来源：深圳电视台2026 APEC比赛题库素材，已排除贸易摩擦等敏感内容</p>
-  </div>
-  <div class="apec-stats-row">
-    <div class="apec-stat-card"><div class="n" style="color:#22c55e">${chWithAny}<span style="font-size:13px;color:var(--muted)">/21</span></div><div class="l">已涵盖APEC要素的章节</div></div>
-    <div class="apec-stat-card"><div class="n" style="color:#60a5fa">${APEC_ELEMENTS.length}</div><div class="l">APEC要素维度</div></div>
-    <div class="apec-stat-card"><div class="n" style="color:#f59e0b">${covPct}%</div><div class="l">整体覆盖率</div></div>
-    <div class="apec-stat-card"><div class="n" style="color:#a78bfa">${topCh}</div><div class="l">第${topCh}章覆盖最多（${topCount}项）</div></div>
-  </div>
-  <div class="apec-legend">
-    ${APEC_ELEMENTS.map(e=>`<div class="apec-legend-item"><span class="apec-tag present" style="color:${e.textColor};background:${e.color};border-color:${e.borderColor};padding:2px 7px;font-size:10px;border-radius:12px;border:1px solid">${e.icon} ${e.name}</span></div>`).join('')}
-  </div>`;
-
-  // 按篇分组输出
-  let chNum = 0;
-  Object.entries(APEC_PARTS).forEach(([partName, partInfo])=>{
-    html += `<div style="font-size:11px;font-weight:700;color:${partInfo.color};text-transform:uppercase;letter-spacing:.06em;margin:14px 0 6px;padding-left:4px">${partName}</div>`;
-    partInfo.chs.forEach(ch=>{
-      const present = APEC_CHAPTER_MAP[ch]||[];
-      const note = APEC_CH_NOTES[ch]||'';
-      const covN = present.length;
-      const covPctCh = Math.round(covN/APEC_ELEMENTS.length*100);
-
-      // preview tags（只显示已覆盖的）
-      const previewTags = present.slice(0,5).map(id=>{
-        const e = APEC_ELEMENTS.find(x=>x.id===id);
-        return e ? `<span class="apec-tag present" style="color:${e.textColor};background:${e.color};border-color:${e.borderColor};font-size:10px;padding:2px 7px;border-radius:12px;border:1px solid">${e.icon} ${e.name}</span>` : '';
-      }).join('');
-      const moreLabel = covN > 5 ? `<span style="font-size:10px;color:var(--muted)">+${covN-5}项</span>` : '';
-
-      html += `<div class="apec-ch" id="apec-ch-${ch}">
-        <div class="apec-ch-head" onclick="toggleApecCh(${ch})">
-          <span class="apec-ch-num" style="color:${partInfo.color}">${ch}</span>
-          <div style="flex:1;min-width:0">
-            <div class="apec-ch-title">${APEC_CH_TITLES[ch]}</div>
-            <div class="apec-coverage" style="margin-top:4px">
-              <div class="apec-cov-bar"><div class="apec-cov-fill" style="width:${covPctCh}%"></div></div>
-              <span class="apec-cov-pct">${covN}/${APEC_ELEMENTS.length}</span>
-            </div>
-          </div>
-          <div class="apec-tags-preview" style="max-width:260px">
-            ${present.length === 0 ? '<span class="apec-empty-label">暂无APEC要素</span>' : previewTags + moreLabel}
-          </div>
-          <span style="color:var(--muted);font-size:12px;flex-shrink:0">▼</span>
-        </div>
-        <div class="apec-ch-body" id="apec-body-${ch}">
-          ${note ? `<div class="apec-detail" style="margin-bottom:10px"><b>📝 写作提示：</b>${note}</div>` : ''}
-          <div class="apec-section">
-            <div class="apec-section-label" style="color:#22c55e">✅ 已涵盖（${covN}项）— 点击标签查看说明</div>
-            <div class="apec-tags">
-              ${APEC_ELEMENTS.map(e=>{
-                const has = present.includes(e.id);
-                return `<span class="apec-tag ${has?'present':'absent'}" style="color:${e.textColor};background:${e.color};border-color:${e.borderColor};border:1px solid"
-                  title="${e.detail}" onclick="showApecDetail('${e.id}',${ch})">${e.icon} <span class="apec-tag-name">${e.name}</span></span>`;
-              }).join('')}
-            </div>
-          </div>
-        </div>
-      </div>`;
-    });
-  });
-
-  document.getElementById('apec-content').innerHTML = html;
-}
-
-function toggleApecCh(ch){
-  const body = document.getElementById('apec-body-'+ch);
-  const head = body.previousElementSibling;
-  body.classList.toggle('open');
-  head.querySelector('span:last-child').textContent = body.classList.contains('open') ? '▲' : '▼';
-}
-
-function showApecDetail(eid, ch){
-  const e = APEC_ELEMENTS.find(x=>x.id===eid);
-  if(!e) return;
-  const present = (APEC_CHAPTER_MAP[ch]||[]).includes(eid);
-  const msg = `${e.icon} ${e.name}\n\n${e.detail}\n\n${present ? '✅ 第'+ch+'章已涵盖此要素' : '⬜ 第'+ch+'章尚未写入，可参考加入'}`;
-  alert(msg);
 }
 
 // ── Export ────────────────────────────────────────────
